@@ -1,6 +1,6 @@
 # Weekly Accountability Webapp
 
-A modern web application for HaiShu and Eric to plan and track their weekly tasks together.
+A modern web application for HaiShu and Eric to plan and track their weekly tasks together with a beautiful forest theme.
 
 ## Features
 
