@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weekly Accountability</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="theme-color" content="#2d5016">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <title>Weekly Accountability</title>
     <style>
         * {
             margin: 0;
@@ -17,8 +20,40 @@
                 sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 200, 120, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(100, 180, 100, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(140, 220, 140, 0.2) 0%, transparent 50%),
+                linear-gradient(135deg, 
+                    #2d5016 0%, 
+                    #4a7c59 15%, 
+                    #6b8e23 30%, 
+                    #8fbc8f 45%, 
+                    #98fb98 60%, 
+                    #90ee90 75%, 
+                    #7cfc00 90%, 
+                    #adff2f 100%
+                );
+            background-attachment: fixed;
             min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Morning dew overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 30%);
+            pointer-events: none;
+            z-index: -1;
         }
 
         .container {
@@ -69,12 +104,12 @@
         }
 
         .user-btn.haishu {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #3730a3 100%);
             color: white;
         }
 
         .user-btn.eric {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #166534 0%, #15803d 50%, #16a34a 100%);
             color: white;
         }
 
@@ -95,7 +130,7 @@
 
         .task-input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #1e40af;
         }
 
         .add-task-btn {
@@ -127,7 +162,7 @@
             background: #f9fafb;
             border-radius: 8px;
             margin-bottom: 0.5rem;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #1e40af;
         }
 
         .task-text {
@@ -168,7 +203,7 @@
         }
 
         .nav-btn.primary {
-            background: #667eea;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
             color: white;
         }
 
@@ -238,6 +273,58 @@
                 flex-direction: column;
                 align-items: center;
             }
+
+            .title {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .user-btn {
+                padding: 0.875rem 1.5rem;
+                font-size: 1rem;
+                min-width: 100px;
+            }
+
+            .task-input {
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+
+            .week-selector {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        /* Ensure background works on mobile */
+        @media (max-width: 768px) {
+            body {
+                background-attachment: scroll; /* Better mobile performance */
+            }
+        }
+
+        /* Landscape mobile optimization */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .card {
+                padding: 1rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .title {
+                font-size: 1.75rem;
+                margin-bottom: 1rem;
+            }
         }
     </style>
 </head>
@@ -285,7 +372,7 @@
                 
                 <div class="week-selector">
                     <label class="week-label">Week Number:</label>
-                    <input type="number" id="weekNumber" class="week-input" placeholder="Enter week number" min="1" max="52">
+                    <input type="text" id="weekNumber" class="week-input" placeholder="Enter week number (e.g., 1, 2, 3...)">
                 </div>
 
                 <div>
