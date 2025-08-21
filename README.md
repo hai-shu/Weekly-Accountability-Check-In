@@ -13,10 +13,6 @@ A modern web application for HaiShu and Eric to plan and track their weekly task
 
 ## Getting Started
 
-### Prerequisites
-
-- Any modern web browser (Chrome, Firefox, Safari, Edge)
-
 ### Installation
 
 1. Clone or download this repository
@@ -72,13 +68,6 @@ That's it! The application runs entirely in your browser with no server setup re
 - **Vanilla JavaScript** - No frameworks required
 - **Local Storage** - Browser-based data persistence
 
-## Project Structure
-
-```
-daily_accountability/
-├── index.html          # Main application file
-└── README.md           # This file
-```
 
 ## Customization
 
@@ -89,12 +78,6 @@ You can easily customize:
 - Week numbering system
 - Data storage format
 
-## Browser Support
-
-- Chrome (recommended)
-- Firefox
-- Safari
-- Edge
 
 ## Advantages of This Approach
 
