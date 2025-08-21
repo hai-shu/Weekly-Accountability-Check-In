@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Accountability</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            margin-bottom: 2rem;
+        }
+
+        .title {
+            text-align: center;
+            color: #1f2937;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 2rem;
+            font-size: 1.25rem;
+        }
+
+        .user-selection {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .user-btn {
+            padding: 1rem 2rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 120px;
+        }
+
+        .user-btn.haishu {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .user-btn.eric {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .user-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .task-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .task-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .add-task-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 1rem;
+        }
+
+        .add-task-btn:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .task-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: #f9fafb;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .task-text {
+            flex: 1;
+            margin-left: 0.5rem;
+        }
+
+        .remove-task-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: background 0.2s ease;
+        }
+
+        .remove-task-btn:hover {
+            background: #dc2626;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .nav-btn {
+            padding: 1rem 2rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn.primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .nav-btn.secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .summary-section {
+            background: #f3f4f6;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-title {
+            color: #374151;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .week-selector {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .week-input {
+            padding: 0.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .week-label {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .user-selection {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .navigation-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- User Selection Page -->
+        <div id="userSelection" class="page active">
+            <div class="card">
+                <h1 class="title">Weekly Accountability</h1>
+                <p class="subtitle">Select who you are to begin planning your week</p>
+                
+                <div class="user-selection">
+                    <button class="user-btn haishu" onclick="selectUser('HaiShu')">
+                        HaiShu
+                    </button>
+                    <button class="user-btn eric" onclick="selectUser('Eric')">
+                        Eric
+                    </button>
+                </div>
+                
+                <div id="currentProgress" class="summary-section" style="display: none;">
+                    <h3 class="summary-title">Current Week Progress:</h3>
+                    <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 1rem;">
+                        <div style="text-align: center;">
+                            <div id="haishuProgress" style="width: 20px; height: 20px; border-radius: 50%; margin: 0 auto 0.5rem; background: #e5e7eb;"></div>
+                            <small>HaiShu</small>
+                        </div>
+                        <div style="text-align: center;">
+                            <div id="ericProgress" style="width: 20px; height: 20px; border-radius: 50%; margin: 0 auto 0.5rem; background: #e5e7eb;"></div>
+                            <small>Eric</small>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <button class="nav-btn primary" onclick="showPage('finalSummary')">View Final Summary</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Personal Tasks Page -->
+        <div id="personalTasks" class="page">
+            <div class="card">
+                <h1 class="title">Personal Tasks - <span id="currentUser"></span></h1>
+                <p class="subtitle">Plan your individual tasks for this week</p>
+                
+                <div class="week-selector">
+                    <label class="week-label">Week Number:</label>
+                    <input type="number" id="weekNumber" class="week-input" placeholder="Enter week number" min="1" max="52">
+                </div>
+
+                <div>
+                    <input type="text" id="newTask" class="task-input" placeholder="Enter a personal task..." onkeypress="handleKeyPress(event)">
+                    <button class="add-task-btn" onclick="addTask()">Add Task</button>
+                </div>
+
+                <div id="personalTasksList" style="display: none;">
+                    <h3 class="summary-title">Your Personal Tasks:</h3>
+                    <ul id="tasksList" class="task-list"></ul>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="nav-btn secondary" onclick="showPage('userSelection')">Back</button>
+                    <button class="nav-btn primary" onclick="nextToCollaborative()">Next: Collaborative Task</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Collaborative Task Page -->
+        <div id="collaborativeTask" class="page">
+            <div class="card">
+                <h1 class="title">Collaborative Task - <span id="currentUser2"></span></h1>
+                <p class="subtitle">Write a task you want the other person to accomplish this week</p>
+                
+                <div class="summary-section">
+                    <h3 class="summary-title">Your Personal Tasks Summary:</h3>
+                    <ul id="personalTasksSummary" class="task-list"></ul>
+                </div>
+
+                <div>
+                    <label class="summary-title">Task for the Other Person:</label>
+                    <textarea id="collaborativeTaskInput" class="task-input" placeholder="Write a task you want the other person to accomplish..." rows="4" style="resize: vertical;"></textarea>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="nav-btn secondary" onclick="showPage('personalTasks')">Back</button>
+                    <button class="nav-btn primary" onclick="nextToFinalFromCollaborative()">Next: Review & Save</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task Summary Page -->
+        <div id="taskSummary" class="page">
+            <div class="card">
+                <h1 class="title">Task Summary - <span id="currentUser3"></span></h1>
+                <p class="subtitle">Review your week <span id="weekNumberDisplay"></span> plan before saving</p>
+                
+                <div class="summary-section">
+                    <h3 class="summary-title">Week <span id="weekNumberDisplay2"></span> - Personal Tasks:</h3>
+                    <ul id="summaryPersonalTasks" class="task-list"></ul>
+                </div>
+
+                <div class="summary-section">
+                    <h3 class="summary-title">Task for the Other Person:</h3>
+                    <div class="task-item">
+                        <span class="task-text" id="summaryCollaborativeTask"></span>
+                    </div>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="nav-btn secondary" onclick="showPage('collaborativeTask')">Back</button>
+                    <button class="nav-btn primary" onclick="nextToFinal()">Next: Review & Save</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Final Summary Page -->
+        <div id="finalSummary" class="page">
+            <div class="card">
+                <h1 class="title">Final Summary - Week <span id="weekNumberDisplay4"></span></h1>
+                <p class="subtitle">Complete overview of both people's tasks for the week</p>
+                
+                <div class="summary-section">
+                    <h3 class="summary-title">Progress Status:</h3>
+                    <div id="progressStatus" style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 1rem;">
+                        <div style="text-align: center;">
+                            <div id="haishuStatus" style="width: 20px; height: 20px; border-radius: 50%; margin: 0 auto 0.5rem; background: #e5e7eb;"></div>
+                            <small>HaiShu</small>
+                        </div>
+                        <div style="text-align: center;">
+                            <div id="ericStatus" style="width: 20px; height: 20px; border-radius: 50%; margin: 0 auto 0.5rem; background: #e5e7eb;"></div>
+                            <small>Eric</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="summary-section">
+                    <h3 class="summary-title">HaiShu's Personal Tasks:</h3>
+                    <ul id="haishuTasks" class="task-list"></ul>
+                </div>
+
+                <div class="summary-section">
+                    <h3 class="summary-title">Eric's Personal Tasks:</h3>
+                    <ul id="ericTasks" class="task-list"></ul>
+                </div>
+
+                <div class="summary-section">
+                    <h3 class="summary-title">Tasks for Each Other:</h3>
+                    <div class="task-item">
+                        <strong>HaiShu wants Eric to:</strong>
+                        <p style="margin-top: 0.5rem; margin-left: 1rem;" id="haishuTaskForEric"></p>
+                    </div>
+                    <div class="task-item" style="margin-top: 0.5rem;">
+                        <strong>Eric wants HaiShu to:</strong>
+                        <p style="margin-top: 0.5rem; margin-left: 1rem;" id="ericTaskForHaishu"></p>
+                    </div>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="nav-btn secondary" onclick="showPage('taskSummary')">Back</button>
+                    <button class="nav-btn secondary" onclick="continuePlanning()">Continue Planning</button>
+                    <button class="nav-btn primary" onclick="saveWeek()">Save Week <span id="weekNumberDisplay5"></span></button>
+                </div>
+
+                <div id="savedWeeks" class="summary-section" style="display: none;">
+                    <h3 class="summary-title">Previously Saved Weeks:</h3>
+                    <div id="savedWeeksList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let personalTasks = [];
+        let collaborativeTask = '';
+        let weekNumber = '';
+        let savedWeeks = {};
+        
+        // Store both people's data for the final summary
+        let weekData = {
+            haishu: { personalTasks: [], taskForOther: '' },
+            eric: { personalTasks: [], taskForOther: '' }
+        };
+
+        // Load saved data from localStorage
+        function loadSavedData() {
+            const savedData = localStorage.getItem('weeklyAccountability');
+            if (savedData) {
+                savedWeeks = JSON.parse(savedData);
+            }
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            if (Object.keys(savedWeeks).length > 0) {
+                localStorage.setItem('weeklyAccountability', JSON.stringify(savedWeeks));
+            }
+        }
+
+        // Load data on page load
+        loadSavedData();
+
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update progress indicators if showing user selection page
+            if (pageId === 'userSelection') {
+                updateProgressIndicators();
+            }
+        }
+
+        function selectUser(user) {
+            currentUser = user;
+            document.getElementById('currentUser').textContent = user;
+            document.getElementById('currentUser2').textContent = user;
+            document.getElementById('currentUser3').textContent = user;
+            
+            // Reset week data if starting fresh
+            if (Object.keys(savedWeeks).length === 0) {
+                weekData = {
+                    haishu: { personalTasks: [], taskForOther: '' },
+                    eric: { personalTasks: [], taskForOther: '' }
+                };
+            }
+            
+            showPage('personalTasks');
+        }
+
+        function addTask() {
+            const newTaskInput = document.getElementById('newTask');
+            const taskText = newTaskInput.value.trim();
+            
+            if (taskText) {
+                personalTasks.push(taskText);
+                newTaskInput.value = '';
+                updatePersonalTasksList();
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                addTask();
+            }
+        }
+
+        function removeTask(index) {
+            personalTasks.splice(index, 1);
+            updatePersonalTasksList();
+        }
+
+        function updatePersonalTasksList() {
+            const tasksList = document.getElementById('tasksList');
+            const personalTasksList = document.getElementById('personalTasksList');
+            
+            if (personalTasks.length > 0) {
+                personalTasksList.style.display = 'block';
+                tasksList.innerHTML = '';
+                
+                personalTasks.forEach((task, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'task-item';
+                    li.innerHTML = `
+                        <span class="task-text">${task}</span>
+                        <button class="remove-task-btn" onclick="removeTask(${index})">Remove</button>
+                    `;
+                    tasksList.appendChild(li);
+                });
+            } else {
+                personalTasksList.style.display = 'none';
+            }
+        }
+
+        function nextToCollaborative() {
+            weekNumber = document.getElementById('weekNumber').value;
+            
+            if (personalTasks.length === 0) {
+                alert('Please add at least one personal task before continuing!');
+                return;
+            }
+            if (!weekNumber) {
+                alert('Please enter the week number before continuing!');
+                return;
+            }
+            
+            // Store current user's personal tasks
+            if (currentUser === 'HaiShu') {
+                weekData.haishu.personalTasks = [...personalTasks];
+            } else {
+                weekData.eric.personalTasks = [...personalTasks];
+            }
+            
+            // Update personal tasks summary
+            const summaryList = document.getElementById('personalTasksSummary');
+            summaryList.innerHTML = '';
+            personalTasks.forEach(task => {
+                const li = document.createElement('li');
+                li.className = 'task-item';
+                li.innerHTML = `<span class="task-text">${task}</span>`;
+                summaryList.appendChild(li);
+            });
+            
+            showPage('collaborativeTask');
+        }
+
+        function nextToSummary() {
+            collaborativeTask = document.getElementById('collaborativeTaskInput').value.trim();
+            
+            if (!collaborativeTask) {
+                alert('Please enter a task for the other person before continuing!');
+                return;
+            }
+            
+            // Store current user's task for the other person
+            if (currentUser === 'HaiShu') {
+                weekData.haishu.taskForOther = collaborativeTask;
+            } else {
+                weekData.eric.taskForOther = collaborativeTask;
+            }
+            
+            // Update summary displays
+            document.getElementById('weekNumberDisplay').textContent = weekNumber;
+            document.getElementById('weekNumberDisplay2').textContent = weekNumber;
+            document.getElementById('weekNumberDisplay3').textContent = weekNumber;
+            
+            // Update personal tasks summary
+            const summaryList = document.getElementById('summaryPersonalTasks');
+            summaryList.innerHTML = '';
+            personalTasks.forEach(task => {
+                const li = document.createElement('li');
+                li.className = 'task-item';
+                li.innerHTML = `<span class="task-text">${task}</span>`;
+                summaryList.appendChild(li);
+            });
+            
+            // Update collaborative task summary
+            document.getElementById('summaryCollaborativeTask').textContent = collaborativeTask;
+            
+            // Show saved weeks if any exist
+            if (Object.keys(savedWeeks).length > 0) {
+                document.getElementById('savedWeeks').style.display = 'block';
+                updateSavedWeeksList();
+            }
+            
+            showPage('taskSummary');
+        }
+
+        function nextToFinalFromCollaborative() {
+            collaborativeTask = document.getElementById('collaborativeTaskInput').value.trim();
+            
+            if (!collaborativeTask) {
+                alert('Please enter a task for the other person before continuing!');
+                return;
+            }
+            
+            // Store current user's task for the other person
+            if (currentUser === 'HaiShu') {
+                weekData.haishu.taskForOther = collaborativeTask;
+            } else {
+                weekData.eric.taskForOther = collaborativeTask;
+            }
+            
+            // Go directly to final summary
+            nextToFinal();
+        }
+
+        function nextToFinal() {
+            // Always allow access to final summary, regardless of completion status
+            // Update week number displays
+            document.getElementById('weekNumberDisplay4').textContent = weekNumber;
+            document.getElementById('weekNumberDisplay5').textContent = weekNumber;
+            
+            // Update HaiShu's tasks (show what's available)
+            const haishuList = document.getElementById('haishuTasks');
+            haishuList.innerHTML = '';
+            if (weekData.haishu.personalTasks.length > 0) {
+                weekData.haishu.personalTasks.forEach(task => {
+                    const li = document.createElement('li');
+                    li.className = 'task-item';
+                    li.innerHTML = `<span class="task-text">${task}</span>`;
+                    haishuList.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.className = 'task-item';
+                li.innerHTML = `<span class="task-text" style="color: #9ca3af; font-style: italic;">HaiShu hasn't planned their tasks yet</span>`;
+                haishuList.appendChild(li);
+            }
+            
+            // Update Eric's tasks (show what's available)
+            const ericList = document.getElementById('ericTasks');
+            ericList.innerHTML = '';
+            if (weekData.eric.personalTasks.length > 0) {
+                weekData.eric.personalTasks.forEach(task => {
+                    const li = document.createElement('li');
+                    li.className = 'task-item';
+                    li.innerHTML = `<span class="task-text">${task}</span>`;
+                    ericList.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.className = 'task-item';
+                li.innerHTML = `<span class="task-text" style="color: #9ca3af; font-style: italic;">Eric hasn't planned their tasks yet</span>`;
+                ericList.appendChild(li);
+            }
+            
+            // Update tasks for each other
+            const haishuTaskForEric = document.getElementById('haishuTaskForEric');
+            const ericTaskForHaishu = document.getElementById('ericTaskForHaishu');
+            
+            if (weekData.haishu.taskForOther) {
+                haishuTaskForEric.textContent = weekData.haishu.taskForOther;
+            } else {
+                haishuTaskForEric.textContent = 'HaiShu hasn\'t assigned a task yet';
+                haishuTaskForEric.style.color = '#9ca3af';
+                haishuTaskForEric.style.fontStyle = 'italic';
+            }
+            
+            if (weekData.eric.taskForOther) {
+                ericTaskForHaishu.textContent = weekData.eric.taskForOther;
+            } else {
+                ericTaskForHaishu.textContent = 'Eric hasn\'t assigned a task yet';
+                ericTaskForHaishu.style.color = '#9ca3af';
+                ericTaskForHaishu.style.fontStyle = 'italic';
+            }
+            
+            // Update progress status indicators
+            const haishuStatus = document.getElementById('haishuStatus');
+            const ericStatus = document.getElementById('ericStatus');
+            
+            // HaiShu status (green if complete, gray if incomplete)
+            if (weekData.haishu.personalTasks.length > 0 && weekData.haishu.taskForOther) {
+                haishuStatus.style.background = '#10b981'; // Green
+            } else {
+                haishuStatus.style.background = '#e5e7eb'; // Gray
+            }
+            
+            // Eric status (green if complete, gray if incomplete)
+            if (weekData.eric.personalTasks.length > 0 && weekData.eric.taskForOther) {
+                ericStatus.style.background = '#10b981'; // Green
+            } else {
+                ericStatus.style.background = '#e5e7eb'; // Gray
+            }
+            
+            showPage('finalSummary');
+        }
+
+        function continuePlanning() {
+            // Go back to user selection to continue planning
+            showPage('userSelection');
+        }
+
+        function updateProgressIndicators() {
+            const currentProgress = document.getElementById('currentProgress');
+            const haishuProgress = document.getElementById('haishuProgress');
+            const ericProgress = document.getElementById('ericProgress');
+            
+            // Check if there's any progress for the current week
+            const hasProgress = (weekData.haishu.personalTasks.length > 0 || weekData.eric.personalTasks.length > 0 ||
+                               weekData.haishu.taskForOther || weekData.eric.taskForOther);
+            
+            if (hasProgress) {
+                currentProgress.style.display = 'block';
+                
+                // Update HaiShu progress indicator
+                if (weekData.haishu.personalTasks.length > 0 && weekData.haishu.taskForOther) {
+                    haishuProgress.style.background = '#10b981'; // Green
+                } else {
+                    haishuProgress.style.background = '#e5e7eb'; // Gray
+                }
+                
+                // Update Eric progress indicator
+                if (weekData.eric.personalTasks.length > 0 && weekData.eric.taskForOther) {
+                    ericProgress.style.background = '#10b981'; // Green
+                } else {
+                    ericProgress.style.background = '#e5e7eb'; // Gray
+                }
+            } else {
+                currentProgress.style.display = 'none';
+            }
+        }
+
+        function updateSavedWeeksList() {
+            const savedWeeksList = document.getElementById('savedWeeksList');
+            savedWeeksList.innerHTML = '';
+            
+            Object.entries(savedWeeks).forEach(([week, data]) => {
+                const weekDiv = document.createElement('div');
+                weekDiv.className = 'task-item';
+                weekDiv.style.marginBottom = '1rem';
+                
+                const timestamp = new Date(data.timestamp).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                weekDiv.innerHTML = `
+                    <div style="margin-bottom: 0.5rem;">
+                        <strong>Week ${week}</strong><br>
+                        <small style="color: #6b7280;">${timestamp}</small>
+                    </div>
+                    <div style="margin-bottom: 0.5rem;">
+                        <strong>HaiShu's Personal Tasks:</strong>
+                        <ul style="margin-left: 1rem; margin-top: 0.25rem;">
+                            ${data.haishu.personalTasks.map(task => `<li>${task}</li>`).join('')}
+                        </ul>
+                        <strong>HaiShu wants Eric to:</strong>
+                        <p style="margin-left: 1rem; margin-top: 0.25rem;">${data.haishu.taskForOther}</p>
+                    </div>
+                    <div>
+                        <strong>Eric's Personal Tasks:</strong>
+                        <ul style="margin-left: 1rem; margin-top: 0.25rem;">
+                            ${data.eric.personalTasks.map(task => `<li>${task}</li>`).join('')}
+                        </ul>
+                        <strong>Eric wants HaiShu to:</strong>
+                        <p style="margin-left: 1rem; margin-top: 0.25rem;">${data.eric.taskForOther}</p>
+                    </div>
+                `;
+                
+                savedWeeksList.appendChild(weekDiv);
+            });
+        }
+
+        function saveWeek() {
+            if (!weekNumber) {
+                alert('Please enter a week number before saving!');
+                return;
+            }
+            
+            // Allow saving even if not both people have completed their planning
+            // This way progress can be saved incrementally
+
+            const completeWeekData = {
+                weekNumber: weekNumber,
+                haishu: weekData.haishu,
+                eric: weekData.eric,
+                timestamp: new Date().toISOString()
+            };
+
+            savedWeeks[weekNumber] = completeWeekData;
+            saveData();
+
+            alert(`Week ${weekNumber} saved successfully!`);
+            
+            // Reset form
+            currentUser = null;
+            personalTasks = [];
+            collaborativeTask = '';
+            weekNumber = '';
+            weekData = {
+                haishu: { personalTasks: [], taskForOther: '' },
+                eric: { personalTasks: [], taskForOther: '' }
+            };
+            
+            // Clear inputs
+            document.getElementById('newTask').value = '';
+            document.getElementById('collaborativeTaskInput').value = '';
+            document.getElementById('weekNumber').value = '';
+            
+            // Reset displays
+            updatePersonalTasksList();
+            
+            showPage('userSelection');
+        }
+    </script>
+</body>
+</html> 
