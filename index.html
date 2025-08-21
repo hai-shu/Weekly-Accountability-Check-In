@@ -63,11 +63,25 @@
         }
 
         .card {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
             margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 30px 60px -12px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.25);
         }
 
         .title {
@@ -75,7 +89,13 @@
             color: #1f2937;
             margin-bottom: 2rem;
             font-size: 2.5rem;
-            font-weight: 700;
+            font-weight: 800;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            letter-spacing: -0.025em;
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .subtitle {
@@ -83,24 +103,44 @@
             color: #6b7280;
             margin-bottom: 2rem;
             font-size: 1.25rem;
+            font-weight: 500;
+            opacity: 0.9;
         }
 
         .user-selection {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             justify-content: center;
             margin-bottom: 2rem;
         }
 
         .user-btn {
-            padding: 1rem 2rem;
+            padding: 1.25rem 2.5rem;
             font-size: 1.125rem;
-            font-weight: 600;
+            font-weight: 700;
             border: none;
-            border-radius: 12px;
+            border-radius: 16px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            min-width: 120px;
+            transition: all 0.3s ease;
+            min-width: 140px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .user-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .user-btn:hover::before {
+            left: 100%;
         }
 
         .user-btn.haishu {
@@ -120,34 +160,47 @@
 
         .task-input {
             width: 100%;
-            padding: 0.75rem;
+            padding: 1rem;
             border: 2px solid #e5e7eb;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 1rem;
             margin-bottom: 1rem;
-            transition: border-color 0.2s ease;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .task-input:focus {
             outline: none;
             border-color: #1e40af;
+            box-shadow: 0 4px 20px rgba(30, 64, 175, 0.15);
+            transform: translateY(-1px);
         }
 
         .add-task-btn {
-            background: #10b981;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
             border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            position: relative;
+            overflow: hidden;
         }
 
         .add-task-btn:hover {
-            background: #059669;
-            transform: translateY(-1px);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .add-task-btn:active {
+            transform: translateY(0);
         }
 
         .task-list {
@@ -158,11 +211,21 @@
         .task-item {
             display: flex;
             align-items: center;
-            padding: 1rem;
-            background: #f9fafb;
-            border-radius: 8px;
-            margin-bottom: 0.5rem;
+            padding: 1.25rem;
+            background: rgba(249, 250, 251, 0.9);
+            backdrop-filter: blur(5px);
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
             border-left: 4px solid #1e40af;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .task-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            background: rgba(249, 250, 251, 0.95);
         }
 
         .task-text {
@@ -193,13 +256,16 @@
         }
 
         .nav-btn {
-            padding: 1rem 2rem;
+            padding: 1.25rem 2.5rem;
             font-size: 1.125rem;
-            font-weight: 600;
+            font-weight: 700;
             border: none;
-            border-radius: 12px;
+            border-radius: 16px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
         .nav-btn.primary {
@@ -208,20 +274,37 @@
         }
 
         .nav-btn.secondary {
-            background: #6b7280;
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
             color: white;
         }
 
         .nav-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+        }
+
+        .nav-btn:active {
+            transform: translateY(-1px);
         }
 
         .summary-section {
-            background: #f3f4f6;
-            border-radius: 12px;
-            padding: 1.5rem;
+            background: rgba(243, 244, 246, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
             margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 4px 20px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .summary-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 30px rgba(0, 0, 0, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.25);
         }
 
         .summary-title {
@@ -233,22 +316,40 @@
 
         .week-selector {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             align-items: center;
             justify-content: center;
             margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
         }
 
         .week-input {
-            padding: 0.5rem;
+            padding: 0.75rem 1rem;
             border: 2px solid #e5e7eb;
-            border-radius: 6px;
+            border-radius: 10px;
             font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .week-input:focus {
+            outline: none;
+            border-color: #1e40af;
+            box-shadow: 0 4px 20px rgba(30, 64, 175, 0.15);
+            transform: translateY(-1px);
         }
 
         .week-label {
-            font-weight: 600;
+            font-weight: 700;
             color: #374151;
+            font-size: 1.1rem;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
         }
 
         .page {
